@@ -522,28 +522,34 @@ export default function OrderDetailModal({ order, onClose, onUpdate }: OrderDeta
             </div>
           )}
 
-          {tab === 'docs' && (
-            <div className="space-y-5 animate-fade-in">
-              {/* Generate documents */}
+          {/* Generate documents */}
               <div>
-                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2.5">Сформировать документ</h3>
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2.5">
+                  Сформировать документ
+                </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {(['invoice', 'tn', 'upd', 'act'] as DocType[]).map((dt) => (
-                    <button
-                      key={dt}
-                      onClick={() => printDocument(editing ? editForm! : order, dt)}
-                      className="flex items-center gap-2 p-3 rounded-xl border border-slate-200/80 bg-white hover:border-brand-300 hover:bg-brand-50/40 transition-all duration-200 group text-left"
-                    >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-500 group-hover:bg-brand-100 group-hover:text-brand-600 transition-colors shrink-0">
-                        <FileDown className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-semibold text-slate-700 truncate">{DOC_LABELS[dt]}</span>
-                    </button>
-                  ))}
+                  {(['invoice', 'tn', 'upd', 'act'] as DocType[]).map((dt) => {
+                    const busy = printingType === dt;
+                    return (
+                      <button
+                        key={dt}
+                        onClick={() => handlePrint(dt)}
+                        disabled={printingType !== null}
+                        className="flex items-center gap-2 p-3 rounded-xl border border-slate-200/80 bg-white hover:border-brand-300 hover:bg-brand-50/40 transition-all duration-200 group text-left disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-500 group-hover:bg-brand-100 group-hover:text-brand-600 transition-colors shrink-0">
+                          <FileDown className="w-4 h-4" />
+                        </div>
+                        <span className="text-xs font-semibold text-slate-700 truncate">
+                          {busy ? 'Формируем…' : DOC_LABELS[dt]}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <p className="mt-2 text-[11px] text-slate-400 flex items-center gap-1.5">
                   <Clock className="w-3 h-3" />
-                  Все поля документа редактируемы. Используйте «Скачать PDF» и «Печать» в окне документа.
+                  Документы формируются из сохранённых данных заявки. Номер присваивается при первом формировании и не меняется при повторной печати.
                 </p>
               </div>
 
