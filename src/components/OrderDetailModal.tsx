@@ -11,7 +11,9 @@ import {
   formatCurrency, formatDate, orderProfit, netOfVat, vatAmount, vatRatePercent,
   getOurEntity, clientDebt, carrierDebt, calcClientPayStatus, calcCarrierPayStatus,
 } from '@/lib/data';
-import { printDocument, DOC_LABELS, type DocType } from '@/lib/documents';
+import { useState } from 'react';
+import { formatDocNumber, printDocument, DOC_LABELS, type DocType } from '@/lib/documents';
+import { supabase } from '@/lib/supabase';
 import { useAccess } from '@/lib/access';
 import { demoEmployees } from '@/lib/permissions';
 
